@@ -1,94 +1,89 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private State m_baseSkill;
-    [SerializeField] private GroundDetector m_groundDetector;
-    [SerializeField] private Health m_health;
     [SerializeField] private PlayerInputManager m_inputManager;
-    [SerializeField] private ParticleSystem m_spyral;
-    [SerializeField] private ParticleSystem m_spawnParticle;
+    [SerializeField] private State m_baseState;
+    [SerializeField] private GroundDetector m_groundDetector;
+    private State m_runtimeState;
+    private State m_currentState;
 
-    private State m_playerCurrentState;
-    private PlayerAnimatiorController m_playerModel;
-    private List<State> m_skill = new();
+    private float m_lastDirection = 1f;
 
+    public GroundDetector GroundDetector { get => m_groundDetector;}
 
-    public State PlayerCurrentState { get => m_playerCurrentState; }
-    public GroundDetector GroundDetector { get => m_groundDetector; }
-    public Health Health { get => m_health; }
-    public PlayerInputManager InputManager { get => m_inputManager; }
-    public PlayerAnimatiorController AnimatorController { get => m_playerModel; }
-
-    private void Awake()
-    {
-
-        m_health.OTakeDamage += PlayerTakesDamage;
-        m_health.Dead += PlayerDead;
-        m_inputManager.OnChangeState += ChangeSkill;
-
-    }
     private void Start()
     {
-        ChangeCurrentState(m_baseSkill);
-        EventManager.Instance.RaisePlayerHealthUpdated(m_health.CurrentHealth);
-        EventManager.Instance.PlayerGainedNewSkill += AddSkill;
-    }
-    private void PlayerDead()
-    {
-        EventManager.Instance.RaisePlayerDied();
+        m_runtimeState = ScriptableObject.Instantiate(m_baseState);
+        m_runtimeState.skills = new List<Skill>(m_baseState.skills);
+
+        ChangeCurrentState(m_runtimeState);
     }
 
-    private void PlayerTakesDamage(int currentHealth)
+    public void SetLastDirection(float direction)
     {
-        EventManager.Instance.RaisePlayerHealthUpdated(currentHealth);
-        EventManager.Instance.RaisePlayerTookDamage();
-    }
-    private void AddSkill(State newSkill)
-    {
-        m_skill.Add(newSkill);
+        m_lastDirection = direction;
     }
 
-    public void ChangeSkill(int i)
+    private IEnumerator SpawnNewModel(Animator animator)
     {
-        if (m_skill.Count - 1 >= i)
-        {
-            if (m_playerCurrentState == m_skill[i])
-            {
-                ChangeCurrentState(m_baseSkill);
-            }
-            else if (m_skill.Count != 0)
-            {
-                ChangeCurrentState(m_skill[Math.Clamp(i, 0, m_skill.Count - 1)]);
-            }
-        }
+        if (m_inputManager == null) yield break;
+
+        yield return new WaitForEndOfFrame();
+
+        animator.transform.SetParent(this.transform);
+        animator.transform.localPosition = Vector3.zero;
+        animator.transform.localScale = new Vector3(Mathf.Abs(animator.transform.localScale.x) * m_lastDirection, animator.transform.localScale.y, animator.transform.localScale.z);
+
+        m_inputManager.OnModelInstantiated();
     }
+
     public void ChangeCurrentState(State playerNewState)
     {
-        m_playerCurrentState = playerNewState;
-        StartCoroutine(SpawnNewModel(playerNewState.model));
+        m_currentState = playerNewState;
+        if (playerNewState.model != null)
+        {
+            Animator animator = playerNewState.model.GetComponent<Animator>();
+            if (animator != null)
+            {
+                StartCoroutine(SpawnNewModel(animator));
+            }
+            else
+            {
+                Debug.LogWarning("The model does not have an Animator component");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("The model is null");
+        }
         EventManager.Instance.RaisePlayerStateChanged(playerNewState);
     }
-    public IEnumerator SpawnNewModel(PlayerAnimatiorController player)
+
+    public void EquipAbility(Skill newSkill, string abilityInput)
     {
-        if (m_spyral!= null)
-            m_spyral.Play();
-        else
-            Debug.LogWarning("No spiral particle assigned to PlayerManager");
+        if (newSkill.Slot != SkillSlot.Ability)
+        {
+            Debug.LogWarning($"{newSkill.name} no es una habilidad Ability.");
+            return;
+        }
 
-        yield return new WaitForSeconds(.5f);
+        m_runtimeState.skills.RemoveAll(s =>
+        {
+            if (s is InputSkill input)
+                return input.ActionName == abilityInput;
+            return false;
+        });
 
-        if (m_spawnParticle != null)
-            m_spawnParticle.Play();
-        else
-            Debug.LogWarning("No spawn particle assigned to PlayerManager");
+        Skill runtimeCopy = ScriptableObject.Instantiate(newSkill);
 
-        if (m_playerModel != null)
-            Destroy(m_playerModel.gameObject);
-        m_playerModel = Instantiate(player, transform);
-        m_playerModel.Initialize(this);
+        if (runtimeCopy is InputSkill inputCopy)
+            inputCopy.OverrideActionName(abilityInput);
+
+        m_runtimeState.skills.Add(runtimeCopy);
+
+        EventManager.Instance.RaisePlayerStateChanged(m_runtimeState);
     }
 }
