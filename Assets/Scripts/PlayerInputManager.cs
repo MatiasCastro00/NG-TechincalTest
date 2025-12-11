@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +17,8 @@ public class PlayerInputManager : MonoBehaviour
     public PlayerControl PlayerControl => m_playerControl;
     public Vector3 Direction => m_direction;
 
+    public Action<int> OnChangeState;
+
     private void Start()
     {
         if (m_playerManager == null)
@@ -26,11 +29,14 @@ public class PlayerInputManager : MonoBehaviour
 
         m_playerControl.Player.Jump.started += OnJumpStarted;
         m_playerControl.Player.Jump.performed += OnJumpPerformed;
+
         m_playerControl.Player.Sprint.performed += ctx => ExecuteInput("Dash");
+
         m_playerControl.Player.Hability1.performed += OnHability1;
         m_playerControl.Player.Hability2.performed += OnHability2;
 
-        m_playerControl.Player.OpenInventory.performed += OnOpenInventory;
+        if (m_playerControl.Player.OpenInventory != null)
+            m_playerControl.Player.OpenInventory.performed += OnOpenInventory;
 
         if (EventManager.Instance != null)
         {
@@ -38,7 +44,6 @@ public class PlayerInputManager : MonoBehaviour
             EventManager.Instance.PlayerEquipmentChanged += OnPlayerEquipmentChanged;
         }
     }
-
 
     private void OnDestroy()
     {
@@ -49,7 +54,8 @@ public class PlayerInputManager : MonoBehaviour
             m_playerControl.Player.Hability1.performed -= OnHability1;
             m_playerControl.Player.Hability2.performed -= OnHability2;
 
-            m_playerControl.Player.OpenInventory.performed -= OnOpenInventory;
+            if (m_playerControl.Player.OpenInventory != null)
+                m_playerControl.Player.OpenInventory.performed -= OnOpenInventory;
         }
 
         if (EventManager.Instance != null)
@@ -64,12 +70,17 @@ public class PlayerInputManager : MonoBehaviour
         if (m_playerControl == null)
             return;
 
-        Vector2 input = m_playerControl.Player.Movement.ReadValue<Vector2>();
-        m_direction = new Vector3(input.x, 0f, input.y);
-
-        if (m_mover != null)
+        if (m_playerControl.Player.enabled)
         {
-            m_mover.Move(m_direction, IsSprinting());
+            Vector2 input = m_playerControl.Player.Movement.ReadValue<Vector2>();
+            m_direction = new Vector3(input.x, 0f, input.y);
+
+            if (m_mover != null)
+                m_mover.Move(m_direction, IsSprinting());
+        }
+        else
+        {
+            m_direction = Vector3.zero;
         }
     }
 
@@ -84,9 +95,7 @@ public class PlayerInputManager : MonoBehaviour
         if (m_inputMap.TryGetValue(inputName, out var skills))
         {
             foreach (var skill in skills)
-            {
                 skill.OnInputPerformed();
-            }
         }
     }
 
@@ -118,7 +127,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void OnPlayerStateChanged(State newState)
     {
-        if (newState == null) return;
+        if (newState == null)
+            return;
+
         RebuildAbilitiesFromSkills(newState.skills);
     }
 
@@ -131,11 +142,13 @@ public class PlayerInputManager : MonoBehaviour
     {
         ClearAbilities();
 
-        if (skills == null) return;
+        if (skills == null)
+            return;
 
         foreach (Skill skill in skills)
         {
-            if (skill == null) continue;
+            if (skill == null)
+                continue;
 
             ISkillComponent instance = skill.InstantiateComponent(gameObject);
 
@@ -143,6 +156,7 @@ public class PlayerInputManager : MonoBehaviour
                 continue;
 
             m_activeSkillComponents.Add(instance);
+
             if (instance is IInputSkillComponent inputSkill && skill is InputSkill inputSkillSO)
             {
                 if (!m_inputMap.TryGetValue(inputSkillSO.ActionName, out var list))
@@ -154,7 +168,6 @@ public class PlayerInputManager : MonoBehaviour
                 list.Add(inputSkill);
             }
 
-            // Habilidad de movimiento
             if (instance is IMove move)
                 m_mover = move;
         }
@@ -166,9 +179,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             skill.OnRemove();
             if (skill is Component comp)
-            {
                 Destroy(comp);
-            }
         }
 
         m_activeSkillComponents.Clear();
@@ -176,8 +187,21 @@ public class PlayerInputManager : MonoBehaviour
         m_mover = null;
     }
 
-
     public void OnModelInstantiated(PlayerAnimatiorController controller)
     {
+    }
+
+    public void SetInputEnabled(bool enabled)
+    {
+        if (m_playerControl == null)
+            return;
+
+        if (enabled)
+            m_playerControl.Player.Enable();
+        else
+            m_playerControl.Player.Disable();
+
+        if (!enabled)
+            m_direction = Vector3.zero;
     }
 }
