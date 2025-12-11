@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 
 public class EquipmentSlot : Slot
 {
-    /*
     [SerializeField] private SkillSlot m_requiredSlotType;
 
     public SkillSlot RequiredSlotType => m_requiredSlotType;
@@ -35,6 +34,6 @@ public class EquipmentSlot : Slot
         }
 
         base.OnDrop(eventData);
+
     }
-    */
 }

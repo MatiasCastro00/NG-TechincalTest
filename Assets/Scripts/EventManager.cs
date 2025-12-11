@@ -13,6 +13,7 @@ public class EventManager : NullableSingleton<EventManager>
     public Action<float, float> ManaUpdated;
     public Action<State> PlayerGainedNewSkill;
 
+    public Action<List<Skill>> PlayerEquipmentChanged;
 
     public void RaisePlayerStateChanged(State s) => PlayerStateChanged?.Invoke(s);
     public void RaisePlayerHealthUpdated(int hp) => PlayerHealthUpdated?.Invoke(hp);
@@ -21,4 +22,7 @@ public class EventManager : NullableSingleton<EventManager>
     public void RaiseEnemyDied() => EnemyDied?.Invoke();
     public void RaiseManaUpdated(float current, float max) => ManaUpdated?.Invoke(current, max);
     public void RaisePlayerGainedNewSkill(State s) => PlayerGainedNewSkill?.Invoke(s);
+
+    public void RaisePlayerEquipmentChanged(List<Skill> equippedSkills)
+        => PlayerEquipmentChanged?.Invoke(equippedSkills);
 }

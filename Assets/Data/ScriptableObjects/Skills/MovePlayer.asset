@@ -16,6 +16,7 @@ MonoBehaviour:
   m_className: MoveComponent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
     PublicKeyToken=null
   m_description: It allows you to move
+  m_skillIcon: {fileID: 21300000, guid: 342a8c8135af6854c9957212b5935c1e, type: 3}
   m_slot: 1
   m_script: {fileID: 11500000, guid: 42611684f687a5d46acc5340af16d78d, type: 3}
   m_actionName: Movement
