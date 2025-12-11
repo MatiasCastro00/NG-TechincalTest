@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3505824743218821167}
   - component: {fileID: 1546658323294340001}
   - component: {fileID: 90878679320416147}
-  - component: {fileID: 8214797752562976255}
   m_Layer: 0
   m_Name: Npc
   m_TagString: Untagged
@@ -163,32 +162,7 @@ MonoBehaviour:
   m_dialoguePages: []
   m_onDialogueFinishedGiveReward:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8214797752562976255}
-        m_TargetAssemblyTypeName: DialogueReward, Assembly-CSharp
-        m_MethodName: GiveReward
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &8214797752562976255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363004030606480550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5426eb1f67df26f4b819d1838643745f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueReward
-  m_item: {fileID: 11400000, guid: 4fcc90232de5ea548b16c4925fd7a6dc, type: 2}
+      m_Calls: []
 --- !u!1 &2344573311141886676
 GameObject:
   m_ObjectHideFlags: 0

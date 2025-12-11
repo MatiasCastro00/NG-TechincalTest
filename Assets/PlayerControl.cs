@@ -154,6 +154,24 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MovementTutorialA"",
+                    ""type"": ""Button"",
+                    ""id"": ""12b8555a-7fd0-4634-98c7-d747ead17b02"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MovementTutorialD"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1ab0f06-5d5c-4351-bdcf-3f25dbd4e095"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -266,6 +284,28 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""147c4408-3c23-41e9-9e05-4948c548c60c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovementTutorialA"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8b6d7f38-9481-4c1d-862f-4ea511fad734"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovementTutorialD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -281,6 +321,8 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
         m_Player_Hability2 = m_Player.FindAction("Hability2", throwIfNotFound: true);
         m_Player_OpenInventory = m_Player.FindAction("OpenInventory", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_MovementTutorialA = m_Player.FindAction("MovementTutorialA", throwIfNotFound: true);
+        m_Player_MovementTutorialD = m_Player.FindAction("MovementTutorialD", throwIfNotFound: true);
     }
 
     ~@PlayerControl()
@@ -368,6 +410,8 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Hability2;
     private readonly InputAction m_Player_OpenInventory;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_MovementTutorialA;
+    private readonly InputAction m_Player_MovementTutorialD;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -407,6 +451,14 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Interact".
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/MovementTutorialA".
+        /// </summary>
+        public InputAction @MovementTutorialA => m_Wrapper.m_Player_MovementTutorialA;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/MovementTutorialD".
+        /// </summary>
+        public InputAction @MovementTutorialD => m_Wrapper.m_Player_MovementTutorialD;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -454,6 +506,12 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @MovementTutorialA.started += instance.OnMovementTutorialA;
+            @MovementTutorialA.performed += instance.OnMovementTutorialA;
+            @MovementTutorialA.canceled += instance.OnMovementTutorialA;
+            @MovementTutorialD.started += instance.OnMovementTutorialD;
+            @MovementTutorialD.performed += instance.OnMovementTutorialD;
+            @MovementTutorialD.canceled += instance.OnMovementTutorialD;
         }
 
         /// <summary>
@@ -486,6 +544,12 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @MovementTutorialA.started -= instance.OnMovementTutorialA;
+            @MovementTutorialA.performed -= instance.OnMovementTutorialA;
+            @MovementTutorialA.canceled -= instance.OnMovementTutorialA;
+            @MovementTutorialD.started -= instance.OnMovementTutorialD;
+            @MovementTutorialD.performed -= instance.OnMovementTutorialD;
+            @MovementTutorialD.canceled -= instance.OnMovementTutorialD;
         }
 
         /// <summary>
@@ -575,5 +639,19 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MovementTutorialA" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMovementTutorialA(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MovementTutorialD" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMovementTutorialD(InputAction.CallbackContext context);
     }
 }
