@@ -1,89 +1,101 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private PlayerInputManager m_inputManager;
-    [SerializeField] private State m_baseState;
+    [Header("Base State")]
+    [SerializeField] private State m_baseSkill;
+
+    [Header("Components")]
     [SerializeField] private GroundDetector m_groundDetector;
-    private State m_runtimeState;
-    private State m_currentState;
+    [SerializeField] private Health m_health;
+    [SerializeField] private PlayerInputManager m_inputManager;
 
-    private float m_lastDirection = 1f;
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem m_spyral;
+    [SerializeField] private ParticleSystem m_spawnParticle;
 
-    public GroundDetector GroundDetector { get => m_groundDetector;}
+    private State m_playerCurrentState;
+    private PlayerAnimatiorController m_playerModel;
+
+    public State BaseState => m_baseSkill;
+    public State CurrentState => m_playerCurrentState;
+    public GroundDetector GroundDetector => m_groundDetector;
+    public Health Health => m_health;
+    public PlayerInputManager InputManager => m_inputManager;
+    public PlayerAnimatiorController AnimatorController => m_playerModel;
 
     private void Start()
     {
-        m_runtimeState = ScriptableObject.Instantiate(m_baseState);
-        m_runtimeState.skills = new List<Skill>(m_baseState.skills);
+        if (m_inputManager == null)
+            m_inputManager = GetComponent<PlayerInputManager>();
 
-        ChangeCurrentState(m_runtimeState);
-    }
+        if (m_health == null)
+            m_health = GetComponent<Health>();
 
-    public void SetLastDirection(float direction)
-    {
-        m_lastDirection = direction;
-    }
-
-    private IEnumerator SpawnNewModel(Animator animator)
-    {
-        if (m_inputManager == null) yield break;
-
-        yield return new WaitForEndOfFrame();
-
-        animator.transform.SetParent(this.transform);
-        animator.transform.localPosition = Vector3.zero;
-        animator.transform.localScale = new Vector3(Mathf.Abs(animator.transform.localScale.x) * m_lastDirection, animator.transform.localScale.y, animator.transform.localScale.z);
-
-        m_inputManager.OnModelInstantiated();
-    }
-
-    public void ChangeCurrentState(State playerNewState)
-    {
-        m_currentState = playerNewState;
-        if (playerNewState.model != null)
+        if (m_baseSkill != null)
         {
-            Animator animator = playerNewState.model.GetComponent<Animator>();
-            if (animator != null)
+
+            ChangeCurrentState(m_baseSkill);
+
+            if (InventoryMenu.Instance != null)
             {
-                StartCoroutine(SpawnNewModel(animator));
-            }
-            else
-            {
-                Debug.LogWarning("The model does not have an Animator component");
+                InventoryMenu.Instance.Initialize(m_baseSkill);
             }
         }
         else
         {
-            Debug.LogWarning("The model is null");
+            Debug.LogWarning("PlayerManager: no se asignó el State base (m_baseSkill).");
         }
-        EventManager.Instance.RaisePlayerStateChanged(playerNewState);
     }
 
-    public void EquipAbility(Skill newSkill, string abilityInput)
+    public void ChangeCurrentState(State newState)
     {
-        if (newSkill.Slot != SkillSlot.Ability)
+        if (newState == null)
         {
-            Debug.LogWarning($"{newSkill.name} no es una habilidad Ability.");
+            Debug.LogWarning("PlayerManager.ChangeCurrentState llamado con newState nulo.");
             return;
         }
 
-        m_runtimeState.skills.RemoveAll(s =>
+        m_playerCurrentState = newState;
+
+        if (m_spyral != null)
+            m_spyral.Play();
+
+
+        if (m_playerCurrentState.model != null)
         {
-            if (s is InputSkill input)
-                return input.ActionName == abilityInput;
-            return false;
-        });
+            StartCoroutine(SwitchModel(m_playerCurrentState.model));
+        }
 
-        Skill runtimeCopy = ScriptableObject.Instantiate(newSkill);
+        if (EventManager.Instance != null)
+        {
+            EventManager.Instance.RaisePlayerStateChanged(m_playerCurrentState);
+        }
+    }
 
-        if (runtimeCopy is InputSkill inputCopy)
-            inputCopy.OverrideActionName(abilityInput);
 
-        m_runtimeState.skills.Add(runtimeCopy);
+    public void ChangeSkill(int index)
+    {
 
-        EventManager.Instance.RaisePlayerStateChanged(m_runtimeState);
+        Debug.Log($"PlayerManager.ChangeSkill({index}) llamado (aún sin lógica específica).");
+    }
+
+
+    private IEnumerator SwitchModel(PlayerAnimatiorController playerPrefab)
+    {
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (m_spawnParticle != null)
+            m_spawnParticle.Play();
+        else
+            Debug.LogWarning("No spawn particle assigned to PlayerManager");
+
+        if (m_playerModel != null)
+            Destroy(m_playerModel.gameObject);
+
+        m_playerModel = Instantiate(playerPrefab, transform);
+        m_playerModel.Initialize(this);
     }
 }

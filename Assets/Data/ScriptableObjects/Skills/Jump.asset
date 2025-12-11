@@ -16,6 +16,7 @@ MonoBehaviour:
   m_className: JumpComponent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
     PublicKeyToken=null
   m_description: 
+  m_skillIcon: {fileID: 21300000, guid: 3744973b1671c7c4cb6b63340856a117, type: 3}
   m_slot: 2
   m_script: {fileID: 11500000, guid: 28f464cea2ee16f4cb96c2bf1c9c0dfc, type: 3}
   m_actionName: Jump
