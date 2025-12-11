@@ -1234,6 +1234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d27bd33e24f1d6848867349f5e160111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputManager
+  m_playerManager: {fileID: 413532901}
 --- !u!114 &413532900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1261,9 +1262,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 517cf80db8a947947902e9d30e0625fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
-  m_inputManager: {fileID: 413532899}
-  m_baseState: {fileID: 11400000, guid: 2b7359cc85b6e564b871171c531ebafb, type: 2}
+  m_baseSkill: {fileID: 11400000, guid: 2b7359cc85b6e564b871171c531ebafb, type: 2}
   m_groundDetector: {fileID: 413532898}
+  m_health: {fileID: 413532900}
+  m_inputManager: {fileID: 413532899}
+  m_spyral: {fileID: 0}
+  m_spawnParticle: {fileID: 0}
 --- !u!1 &509836876
 GameObject:
   m_ObjectHideFlags: 0
@@ -1514,6 +1518,7 @@ GameObject:
   - component: {fileID: 779413721}
   - component: {fileID: 779413723}
   - component: {fileID: 779413722}
+  - component: {fileID: 779413724}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -1578,6 +1583,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 779413720}
   m_CullTransparentMesh: 1
+--- !u!114 &779413724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779413720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9d3656bfe657144957c7dbd64e408e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSlot
+  m_requiredSlotType: 4
 --- !u!1 &991885855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,6 +1708,7 @@ GameObject:
   - component: {fileID: 1075059913}
   - component: {fileID: 1075059915}
   - component: {fileID: 1075059914}
+  - component: {fileID: 1075059916}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -1754,6 +1773,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1075059912}
   m_CullTransparentMesh: 1
+--- !u!114 &1075059916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075059912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9d3656bfe657144957c7dbd64e408e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSlot
+  m_requiredSlotType: 1
 --- !u!1 &1145623997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1913,6 +1945,7 @@ GameObject:
   - component: {fileID: 1167983389}
   - component: {fileID: 1167983391}
   - component: {fileID: 1167983390}
+  - component: {fileID: 1167983392}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -1977,6 +2010,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167983388}
   m_CullTransparentMesh: 1
+--- !u!114 &1167983392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167983388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9d3656bfe657144957c7dbd64e408e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSlot
+  m_requiredSlotType: 4
 --- !u!1 &1200790899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2206,6 +2252,7 @@ GameObject:
   - component: {fileID: 1407669827}
   - component: {fileID: 1407669829}
   - component: {fileID: 1407669828}
+  - component: {fileID: 1407669830}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -2270,6 +2317,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407669826}
   m_CullTransparentMesh: 1
+--- !u!114 &1407669830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407669826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9d3656bfe657144957c7dbd64e408e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSlot
+  m_requiredSlotType: 2
 --- !u!1 &1445064297
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,13 +2605,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventoryMenu
   m_maxSlots: 18
   m_slotPrefab: {fileID: 4597343520951353730, guid: 9dd48c96fb58bbe4da0d82c87f0833f5, type: 3}
-  m_inventoryPanel: {fileID: 676628441}
+  m_equipmentSlots:
+  - {fileID: 1075059916}
+  - {fileID: 1407669830}
+  - {fileID: 1167983392}
+  - {fileID: 779413724}
   m_slots: []
+  m_inventoryPanel: {fileID: 676628441}
+  m_canvasGroup: {fileID: 1509093071}
   m_itemDescription: {fileID: 1509093069}
   m_item: {fileID: 2754304262731418780, guid: 5ea4f7611964dd543aebd7b9ea016e59, type: 3}
   m_canvas: {fileID: 1509093067}
-  skilltest: {fileID: 11400000, guid: 4fcc90232de5ea548b16c4925fd7a6dc, type: 2}
-  skilltest2: {fileID: 11400000, guid: a6dc987421dedd646aaf89a5b4cf31e5, type: 2}
+  m_fadeDuration: 0.25
 --- !u!225 &1509093071
 CanvasGroup:
   m_ObjectHideFlags: 0
