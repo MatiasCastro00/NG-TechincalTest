@@ -24,8 +24,12 @@ public class Interactable : MonoBehaviour
 
     void OnEnable()
     {
-        if (m_interactAction != null)
+        if (m_interactAction != null && m_interactAction.action != null)
+        {
             m_interactAction.action.performed += OnInteractPerformed;
+            if (!m_interactAction.action.enabled)
+                m_interactAction.action.Enable();
+        }
 
         UpdatePromptText();
 
@@ -35,7 +39,7 @@ public class Interactable : MonoBehaviour
 
     void OnDisable()
     {
-        if (m_interactAction != null)
+        if (m_interactAction != null && m_interactAction.action != null)
             m_interactAction.action.performed -= OnInteractPerformed;
     }
 
@@ -75,7 +79,7 @@ public class Interactable : MonoBehaviour
             return;
 
         string binding = m_interactAction.action.GetBindingDisplayString();
-        m_promptLabel.text = binding ;
+        m_promptLabel.text = binding + " - " + m_actionDescription;
     }
 
 #if UNITY_EDITOR
