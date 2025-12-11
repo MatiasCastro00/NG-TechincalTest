@@ -79,7 +79,7 @@ public class Interactable : MonoBehaviour
             return;
 
         string binding = m_interactAction.action.GetBindingDisplayString();
-        m_promptLabel.text = binding + " - " + m_actionDescription;
+        m_promptLabel.text = binding;
     }
 
 #if UNITY_EDITOR
