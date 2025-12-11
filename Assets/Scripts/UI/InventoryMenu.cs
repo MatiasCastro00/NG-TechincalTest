@@ -145,9 +145,15 @@ public class InventoryMenu : NullableSingleton<InventoryMenu>
             }
         }
 
-        RaiseEquipmentChangedFromCurrentSlots();
-
         m_isLoading = false;
+
+        StartCoroutine(DelayedRaiseEquipmentAndSave());
+    }
+
+    private IEnumerator DelayedRaiseEquipmentAndSave()
+    {
+        yield return null;
+        RaiseEquipmentChangedFromCurrentSlots();
         SaveInventoryToState();
     }
 

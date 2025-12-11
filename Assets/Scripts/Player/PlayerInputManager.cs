@@ -129,7 +129,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (newState == null)
             return;
-
+        Debug.Log("PlayerInputManager received equipment changed.");
         RebuildAbilitiesFromSkills(newState.skills);
     }
 
