@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 549cf542b627aa54dbc1205d7f51acce, type: 3}
   m_Name: PlayerBaseState
   m_EditorClassIdentifier: Assembly-CSharp::State
-  stateName: 
-  skills: []
-  manaCost: 0
-  model: {fileID: 0}
+  stateName: BaseState
+  skills:
+  - {fileID: 11400000, guid: 4fcc90232de5ea548b16c4925fd7a6dc, type: 2}
+  - {fileID: 11400000, guid: a6dc987421dedd646aaf89a5b4cf31e5, type: 2}
+  model: {fileID: 1140124635071739756, guid: 1e0416bf0037d684388b51e6dc292d28, type: 3}

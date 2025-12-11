@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119b8846c58499a4bb376f18d12a7f3d, type: 3}
   m_Name: Jump
   m_EditorClassIdentifier: Assembly-CSharp::JumpSO
-  m_name: 
-  m_className: 
-  m_slot: 0
-  m_script: {fileID: 0}
-  m_actionName: 
-  jumpHeight: 0
+  m_name: Jump
+  m_className: JumpComponent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    PublicKeyToken=null
+  m_description: 
+  m_slot: 2
+  m_script: {fileID: 11500000, guid: 28f464cea2ee16f4cb96c2bf1c9c0dfc, type: 3}
+  m_actionName: Jump
+  jumpHeight: 4
