@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerAnimatiorController : MonoBehaviour
@@ -8,10 +9,11 @@ public class PlayerAnimatiorController : MonoBehaviour
     public void Initialize(PlayerManager playerManager)
     {
         m_playerManager = playerManager;
+
     }
     private void Update()
     {
-        /*
+        
         if (m_playerManager == null) return;
         Vector3 direction = m_playerManager.InputManager.Direction;
         bool isGrounded = m_playerManager.GroundDetector.IsGrounded();
@@ -31,9 +33,9 @@ public class PlayerAnimatiorController : MonoBehaviour
             float yRotation = direction.x > 0 ? -90f : 90f;
             transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
-        */
+        
     }
-
+   
     public void Jump()
     {
         m_animator.SetTrigger("IsJumping");
