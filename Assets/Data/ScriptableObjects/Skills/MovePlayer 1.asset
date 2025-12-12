@@ -15,11 +15,11 @@ MonoBehaviour:
   m_name: Movement
   m_className: MoveComponent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
     PublicKeyToken=null
-  m_description: An entry-level locomotion enhancer that stabilizes stride patterns
-    and improves directional response. Restores baseline walking speed after cryo-recovery.
+  m_description: A refined upgrade chip featuring advanced servo-assist algorithms.
+    Significantly increases movement speed, acceleration, and overall agility.
   m_skillIcon: {fileID: 21300000, guid: 342a8c8135af6854c9957212b5935c1e, type: 3}
   m_slot: 1
   m_script: {fileID: 11500000, guid: 42611684f687a5d46acc5340af16d78d, type: 3}
   m_actionName: Movement
-  walkSpeed: 3
-  runSpeed: 6
+  walkSpeed: 4
+  runSpeed: 8
