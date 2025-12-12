@@ -57,12 +57,13 @@ public class DialogueManager : NullableSingleton<DialogueManager>
     {
         if (!m_isActive)
             return;
-
+        EventManager.Instance?.Talk();
         HandleNextInput();
     }
 
     public void StartDialogue(string[] pages, string npcName)
     {
+        EventManager.Instance?.Talk();
         if (pages == null || pages.Length == 0)
             return;
 
