@@ -18,9 +18,6 @@ public class PlayerInputManager : MonoBehaviour
     public PlayerControl PlayerControl => m_playerControl;
     public Vector3 Direction => m_direction;
 
-    public Action<int> OnChangeState;
-    float m_stepTimer;
-    System.Random m_rng = new System.Random();
 
 
 
@@ -83,19 +80,6 @@ public class PlayerInputManager : MonoBehaviour
 
             m_mover.Move(m_direction, IsSprinting());
 
-            if (m_direction.magnitude > 0.1f)
-            {
-                m_stepTimer -= Time.deltaTime;
-                if (m_stepTimer <= 0f)
-                {
-                    PlayRandomStep();
-                    m_stepTimer = m_stepInterval;
-                }
-            }
-            else
-            {
-                m_stepTimer = 0f;
-            }
         }
         else
         {
@@ -103,17 +87,7 @@ public class PlayerInputManager : MonoBehaviour
         }
 
     }
-    void PlayRandomStep()
-    {
-        int r = m_rng.Next(0, 3);
-
-        if (r == 0)
-            EventManager.Instance?.RaisePlayerStep();
-        else if (r == 1)
-            EventManager.Instance?.RaisePlayerStep2();
-        else
-            EventManager.Instance?.RaisePlayerStep3();
-    }
+    
 
     public bool IsSprinting()
     {
