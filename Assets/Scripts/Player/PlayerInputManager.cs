@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerInputManager : MonoBehaviour
 {
     [SerializeField] private PlayerManager m_playerManager;
+    [SerializeField] float m_stepInterval = 0.4f;
 
     private PlayerControl m_playerControl;
     private Vector3 m_direction;
@@ -18,6 +19,10 @@ public class PlayerInputManager : MonoBehaviour
     public Vector3 Direction => m_direction;
 
     public Action<int> OnChangeState;
+    float m_stepTimer;
+    System.Random m_rng = new System.Random();
+
+
 
     private void Start()
     {
@@ -43,6 +48,7 @@ public class PlayerInputManager : MonoBehaviour
             EventManager.Instance.PlayerStateChanged += OnPlayerStateChanged;
             EventManager.Instance.PlayerEquipmentChanged += OnPlayerEquipmentChanged;
         }
+        
     }
 
     private void OnDestroy()
@@ -70,18 +76,43 @@ public class PlayerInputManager : MonoBehaviour
         if (m_playerControl == null)
             return;
 
-        if (m_playerControl.Player.enabled)
+        if (m_playerControl.Player.enabled && m_mover != null)
         {
             Vector2 input = m_playerControl.Player.Movement.ReadValue<Vector2>();
-            m_direction = new Vector3(input.x, 0f, input.y);
+            m_direction = new Vector3(input.x, 0, input.y);
 
-            if (m_mover != null)
-                m_mover.Move(m_direction, IsSprinting());
+            m_mover.Move(m_direction, IsSprinting());
+
+            if (m_direction.magnitude > 0.1f)
+            {
+                m_stepTimer -= Time.deltaTime;
+                if (m_stepTimer <= 0f)
+                {
+                    PlayRandomStep();
+                    m_stepTimer = m_stepInterval;
+                }
+            }
+            else
+            {
+                m_stepTimer = 0f;
+            }
         }
         else
         {
             m_direction = Vector3.zero;
         }
+
+    }
+    void PlayRandomStep()
+    {
+        int r = m_rng.Next(0, 3);
+
+        if (r == 0)
+            EventManager.Instance?.RaisePlayerStep();
+        else if (r == 1)
+            EventManager.Instance?.RaisePlayerStep2();
+        else
+            EventManager.Instance?.RaisePlayerStep3();
     }
 
     public bool IsSprinting()
