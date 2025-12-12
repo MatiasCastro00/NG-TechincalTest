@@ -276,6 +276,64 @@ public class InventoryMenu : NullableSingleton<InventoryMenu>
 
         EventManager.Instance.RaisePlayerEquipmentChanged(equippedSkills);
     }
+    public void ResetInventoryData()
+    {
+        if (m_currentState == null)
+        {
+            Debug.LogWarning("InventoryMenu: Cannot reset inventory data because current state is null.");
+            return;
+        }
+
+        m_isLoading = true;
+
+        ClearAllSlots();
+
+        if (m_currentState.savedInventorySlots == null)
+            m_currentState.savedInventorySlots = new List<Skill>();
+        else
+            m_currentState.savedInventorySlots.Clear();
+
+        if (m_currentState.savedEquipmentSlots == null)
+            m_currentState.savedEquipmentSlots = new List<Skill>();
+        else
+            m_currentState.savedEquipmentSlots.Clear();
+
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(m_currentState);
+#endif
+
+        RaiseEquipmentChangedFromCurrentSlots();
+
+        m_isLoading = false;
+
+        Debug.Log("InventoryMenu: Inventory save data cleared (lists set to size 0).");
+    }
+
+
+    private void EnsureSavedListsSize()
+    {
+        if (m_currentState.savedInventorySlots == null)
+            m_currentState.savedInventorySlots = new List<Skill>();
+
+        if (m_currentState.savedEquipmentSlots == null)
+            m_currentState.savedEquipmentSlots = new List<Skill>();
+
+        if (m_currentState.savedInventorySlots.Count != m_maxSlots)
+        {
+            m_currentState.savedInventorySlots.Clear();
+            for (int i = 0; i < m_maxSlots; i++)
+                m_currentState.savedInventorySlots.Add(null);
+        }
+
+        int equipmentCount = (m_equipmentSlots == null) ? 0 : m_equipmentSlots.Count;
+
+        if (m_currentState.savedEquipmentSlots.Count != equipmentCount)
+        {
+            m_currentState.savedEquipmentSlots.Clear();
+            for (int i = 0; i < equipmentCount; i++)
+                m_currentState.savedEquipmentSlots.Add(null);
+        }
+    }
 
     private void SaveInventoryToState()
     {

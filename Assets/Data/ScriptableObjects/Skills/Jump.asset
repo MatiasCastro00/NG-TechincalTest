@@ -15,7 +15,9 @@ MonoBehaviour:
   m_name: Jump
   m_className: JumpComponent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
     PublicKeyToken=null
-  m_description: It allows you to jump
+  m_description: "A standard-issue mobility upgrade chip designed to enhance vertical
+    displacement. Integrates with the user\u2019s internal movement rig, enabling
+    controlled low-power jump boosts."
   m_skillIcon: {fileID: 21300000, guid: 3744973b1671c7c4cb6b63340856a117, type: 3}
   m_slot: 2
   m_script: {fileID: 11500000, guid: 28f464cea2ee16f4cb96c2bf1c9c0dfc, type: 3}
